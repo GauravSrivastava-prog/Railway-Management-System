@@ -1,0 +1,7 @@
+print("Enter Seconds : ",end='')
+sec = int(input())
+min = int(sec / 60)
+sec_left = int(sec % 60)
+hour = int(min / 60)
+min_left = int(min % 60)
+print(hour,"hour",(min_left),"min",(sec_left),"sec")

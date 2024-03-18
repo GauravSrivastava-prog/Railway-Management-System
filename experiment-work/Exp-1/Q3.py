@@ -1,0 +1,11 @@
+def printvalue(name:str, num:int, dec:float):
+    print("String : ",name)
+    print("Integer : ",num)
+    print("Decimal : ",dec)
+print("Enter a string value : ",end='')
+str = input()
+print("Enter a integer value : ",end='')
+num = int(input())
+print("Enter a decimal value : ",end='')
+dec = float(input())
+printvalue(str,num,dec)
