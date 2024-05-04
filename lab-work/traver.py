@@ -1,5 +1,0 @@
-print("Enter string : ")
-str = input()
-print("Enter substring : ")
-sub = input()
-print(str.count(sub))
