@@ -1,0 +1,88 @@
+/* CSS styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('blake-wisz-Xn5FbEM9564-unsplash.jpeg'); /* Replace 'path_to_your_background_image.jpg' with the actual path to your background image */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: center;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+    
+.container {
+    max-width: 800px;
+    padding: 40px;
+    background-color: rgba(240, 240, 240, 0.8); /* Adjust the alpha value (last parameter) for transparency */
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease;
+}
+
+.container:hover {
+    transform: scale(1.05); /* Increase the size by 5% on hover */
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+    background-color: #fafafa;
+}
+
+h1 {
+    color: #007bff;
+    text-align: center;
+    font-size: 48px;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #555;
+}
+
+select, input[type="text"], input[type="password"], button {
+    width: calc(100% - 20px);
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #009688;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #00796b;
+}
+
+#card_info {
+    display: none;
+}
+
+#submit_message {
+    text-align: center;
+    color: #009688;
+    font-size: 24px;
+    margin-top: 20px;
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RailWise Payment Gateway !</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>.Welcome to RailWise Payment Gateway.</h1>
+        <h2>A safe passage for your payment needs !</h2>
+        <div id="submit_message"></div>
+        
+        <form id="payment_form" method="post" action="{{ url_for('payment') }}">
+            <label for="payment_type">Select Payment Type:</label>
+            <select id="payment_type" name="paymentType">
+                <option value="cash">Cash</option>
+                <option value="card">Card</option>
+            </select>
+            
+            <div id="card_info">
+                <label for="card_number">Enter Card Number:</label>
+                <input type="text" id="card_number" name="cardNumber">
+                <label for="cvv">Enter CVV:</label>
+                <input type="password" id="cvv" name="cvv">
+            </div>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('payment_type').addEventListener('change', function() {
+            var cardInfo = document.getElementById('card_info');
+            if (this.value === 'card') {
+                cardInfo.style.display = 'block';
+            } else {
+                cardInfo.style.display = 'none';
+            }
+        });
+
+        document.getElementById('payment_form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            var paymentType = document.getElementById('payment_type').value;
+            var cardNumber = '';
+            var cvv = '';
+
+            if (paymentType === 'card') {
+                cardNumber = document.getElementById('card_number').value;
+                cvv = document.getElementById('cvv').value;
+            }
+
+            // Send the payment information to Flask backend
+            fetch('/payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    paymentType: paymentType,
+                    cardNumber: cardNumber,
+                    cvv: cvv
+                })
+            }).then(response => response.text())
+              .then(data => {
+                  console.log(data);
+                  document.getElementById('submit_message').innerText = "Form Submitted Successfully";
+              })
+              .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
