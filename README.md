@@ -47,5 +47,6 @@ This project was made by:
 ## Contributing
 Contributions are welcome! If you find any bugs or want to suggest improvements, please open an issue or submit a pull request.
 
-Note -: Do change the path locations for every CSV files in the program if you are trying to run this program on your device.
+##Note 
+Do change the path locations for every CSV files in the program if you are trying to run this program on your device.
 ---
