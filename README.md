@@ -8,6 +8,13 @@ This is a Railway Management System developed in Python. The system allows users
 - **Check Ticket Status**: Users can check the status of their booked tickets using the PNR number.
 - **Show Available Trains**: Users can view the list of trains currently running.
 
+## Contributors
+This project was made by:
+- Gaurav
+- Manan
+- Ronak
+- Aadit
+
 ## Prerequisites
 - Python 3.x
 - `pandas` library
