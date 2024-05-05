@@ -1,74 +1,43 @@
-# Simple Payment Gateway Demo
+# Railway Management System
 
-A simple demonstration of a payment gateway program built using Python, Flask, HTML, CSS, and a touch of JavaScript embedded within HTML. This program showcases the basic functionality of accessing user inputs from an HTML webpage, processing them in a Flask server, and displaying information through the console.
-
-## Table of Contents
-
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Future Enhancements](#future-enhancements)
-- [Contributing](#contributing)
-
-## Introduction
-
-This project serves as a minimalistic example of a payment gateway system. It allows users to input payment information such as card number, CVV, and payment type through a simple HTML form. The Flask server receives this information, processes it, and prints it to the console as a demonstration of functionality.
+## Overview
+This is a Railway Management System developed in Python. The system allows users to book tickets, check ticket status, and view available trains.
 
 ## Features
+- **Book Ticket**: Users can book train tickets by providing necessary details such as source, destination, date of departure, quota, and class.
+- **Check Ticket Status**: Users can check the status of their booked tickets using the PNR number.
+- **Show Available Trains**: Users can view the list of trains currently running.
 
-- User-friendly HTML form for inputting payment information.
-- Server-side processing of payment data using Flask.
-- Demonstrates basic validation and processing of payment information.
-- Utilizes minimal JavaScript for form handling within HTML.
-- Ready-to-use template for building upon or integrating into larger projects.
+## Prerequisites
+- Python 3.x
+- `pandas` library
+- `tabulate` library
+- `smtplib` library
 
 ## Installation
-
-To run this application locally, follow these steps:
-
-1. Clone the repository:
-
-    ```bash
-    git clone https://github.com/GauravSrivastava-prog/Payment-Gateway
-    ```
-
-2. Navigate to the project directory:
-
-    ```bash
-    cd simple-payment-gateway-demo
-    ```
-
-3. Install the required dependencies:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
+1. Clone the repository: `git clone https://github.com/your_username/railway-management.git`
+2. Install the required libraries: `pip install pandas tabulate`
 
 ## Usage
+1. Run the `main.py` file: `python main.py`
+2. Follow the on-screen instructions to perform desired actions.
 
-1. Run the Flask server:
+## How to Book a Ticket
+1. Choose the option to "Book Ticket".
+2. Enter source, destination, and date of departure.
+3. Select quota and class.
+4. Confirm the booking.
 
-    ```bash
-    python payment_gateway.py
-    ```
+## How to Check Ticket Status
+1. Choose the option to "Check Ticket Status".
+2. Enter the PNR number.
+3. View the ticket status.
 
-2. Open your web browser and go to [http://127.0.0.1:5002/](http://127.0.0.1:5002/) to access the application.
-
-3. Enter payment information in the provided form fields and submit the form.
-
-4. Check the console where the Flask server is running to view the printed payment information.
-
-## Future Enhancements
-
-- Implement validation checks for card details to ensure validity.
-- Identify and differentiate card types (e.g., Visa, Mastercard, etc.) based on the card number.
-- Enhance the user interface with more advanced CSS styling.
-- Add server-side storage functionality to store payment information securely.
-- Integrate with actual payment gateways for real transaction processing.
+## How to Show Available Trains
+1. Choose the option to "Show Available Trains".
+2. View the list of available trains.
 
 ## Contributing
-
-Contributions are welcome! If you have any ideas for improvements or new features, feel free to submit an issue or a pull request.
+Contributions are welcome! If you find any bugs or want to suggest improvements, please open an issue or submit a pull request.
 
 ---
