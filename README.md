@@ -26,7 +26,7 @@ This project was made by:
 2. Install the required libraries: `pip install pandas tabulate`
 
 ## Usage
-1. Run the `main.py` file: `python main.py`
+1. Run the `TM5.py` file: `python TM5.py`
 2. Follow the on-screen instructions to perform desired actions.
 
 ## How to Book a Ticket
