@@ -22,7 +22,7 @@ This project was made by:
 - `smtplib` library
 
 ## Installation
-1. Clone the repository: `git clone https://github.com/your_username/railway-management.git`
+1. Clone the repository: `https://github.com/GauravSrivastava-prog/Railway-Management-System`
 2. Install the required libraries: `pip install pandas tabulate`
 
 ## Usage
