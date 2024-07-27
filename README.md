@@ -10,7 +10,7 @@ This is a Railway Management System developed in Python. The system allows users
 
 ## Contributors
 This project was made by:
-- Gaurav
+- Gaurav (Project Head)
 - Manan
 - Ronak
 - Aadit
