@@ -1,3 +1,5 @@
+# How i created the trains.csv file 
+
 import pandas as pd
 
 # Read the CSV file into a DataFrame
