@@ -1,5 +1,5 @@
 # Test Check on sample data for TM5.py
-# Do not run !
+# Warning : This is not the main project file. Might enounter some path location errors !
 
 import pandas as pd
 from tabulate import tabulate
