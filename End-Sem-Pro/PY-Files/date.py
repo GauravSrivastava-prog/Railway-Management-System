@@ -1,3 +1,5 @@
+# Tatkaal Allocation Logic.
+
 from datetime import datetime, timedelta
 
 # Take the random date from the user
