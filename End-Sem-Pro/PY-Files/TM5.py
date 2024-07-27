@@ -1,3 +1,4 @@
+# This is the file you run !
 import csv
 import random
 import os
@@ -9,33 +10,34 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email import encoders
+import xlsxwriter
 
+class TicketStatus:
+    def __init__(self):
+        self.pnr = ""
 
-class ticket_status:
-    pnr = ""
     def check_status(self):
-        self.pnr = input("User Enter Your PNR Number : ")
-        path = "/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/User-Data/"+self.pnr+".xlsx"
+        self.pnr = input("User Enter Your PNR Number: ")
+        path = f"/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/User-Data/{self.pnr}.xlsx"
         if os.path.exists(path):
-            print("User Your Ticket Has Been Confirmed !")
+            print("User, your ticket has been confirmed!")
             print("Here is your ticket ->")
             df = pd.read_excel(path)
             print(df)
         else:
-            print("Ticket Can't be found !")
+            print("Ticket can't be found!")
 
-
-class show_available_trains:
+class ShowAvailableTrains:
     def available_trains(self):
         print("---------------------------------------------")
-        print("\tList Of Trains Running Right Now !")
+        print("\tList of Trains Running Right Now!")
         print("---------------------------------------------")
         with open("/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/CSV-Files/Trains.csv", "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
                 print("->", row['Train_Name'])
 
-class book_ticket:
+class BookTicket:
     def __init__(self):
         self.src = ""
         self.des = ""
@@ -124,14 +126,13 @@ class book_ticket:
         distance_fare = distance_travelled * 10 
         class_rate = {'1A': 4, '2A': 1.5, '3A': 1.0, 'SL': 0.5}
         if self.cls in class_rate:
-            class_fare = int(class_rate[self.cls])
+            class_fare = class_rate[self.cls]
         quota_rate = {'GN': 1.0, 'LD': 1.0, 'HP': 1.0, 'DF': 1.0, 'YU': 1.1, 'TQ': 1.4}
         if self.quo in quota_rate:
-            quota_fare = int(quota_rate[self.quo])
+            quota_fare = quota_rate[self.quo]
 
-        amount = distance_fare*quota_fare*class_fare
-        self.fare = '₹ '+str(amount)+" Only"
-
+        amount = abs(distance_fare * quota_fare * class_fare)
+        self.fare = f'₹ {amount} Only'
 
     def route_calculate(self):
         df = pd.read_csv("/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/CSV-Files/Trains.csv")
@@ -145,21 +146,27 @@ class book_ticket:
         print("---------------------------------------------")
         self.fare_calculate()
         self.time_calculate()
-        self.user_name = input("Name :\t")
-        self.user_age = input("Age :\t")
-        self.user_gender = input("Gender :\t")
-        self.user_nationality = input("Nationality :\t")
-        self.user_num = input("Number :\t")
-        self.user_email = input("Email :\t")
-        path_excel = "/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/User-Data/" + self.pnr + ".xlsx"
-        headers = ['From','To','Train_Name','Train_Number','Name','PNR','Seat_Number','Birth_Type','Quota','Class','Date_Of_Departure','Age','Gender','Nationality','Number','Email', 'Waiting_List', 'Price']
-        data = {'From':[self.src],'To':[self.des],'Train_Name':[self.trname],'Train_Number':[self.trnum],'Name':[self.user_name],'PNR':[self.pnr],'Seat_Number':[self.seat_number],'Birth_Type':[self.birth_type],'Quota':[self.quo],'Class':[self.cls],'Date_Of_Departure':[self.dod],'Age':[self.user_age],'Gender':[self.user_gender],'Nationality':[self.user_nationality],'Number':[self.user_num],'Email':[self.user_email], 'Waiting_List':[self.waiting], 'Price':[self.fare]}
+        self.user_name = input("Name: ")
+        self.user_age = input("Age: ")
+        self.user_gender = input("Gender: ")
+        self.user_nationality = input("Nationality: ")
+        self.user_num = input("Number: ")
+        self.user_email = input("Email: ")
+        path_excel = f"/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/User-Data/{self.pnr}.xlsx"
+        headers = ['From', 'To', 'Train_Name', 'Train_Number', 'Name', 'PNR', 'Seat_Number', 'Birth_Type', 'Quota', 'Class', 'Date_Of_Departure', 'Age', 'Gender', 'Nationality', 'Number', 'Email', 'Waiting_List', 'Price']
+        data = {
+            'From': [self.src], 'To': [self.des], 'Train_Name': [self.trname], 'Train_Number': [self.trnum],
+            'Name': [self.user_name], 'PNR': [self.pnr], 'Seat_Number': [self.seat_number], 'Birth_Type': [self.birth_type],
+            'Quota': [self.quo], 'Class': [self.cls], 'Date_Of_Departure': [self.dod], 'Age': [self.user_age],
+            'Gender': [self.user_gender], 'Nationality': [self.user_nationality], 'Number': [self.user_num],
+            'Email': [self.user_email], 'Waiting_List': [self.waiting], 'Price': [self.fare]
+        }
         df = pd.DataFrame(data)
         route_timings_df = pd.DataFrame({'Route': self.route, 'Timings': self.times})
         df_transpose = df.T
         writer = pd.ExcelWriter(path_excel, engine='xlsxwriter')
-        df_transpose.to_excel(writer, sheet_name='Sheet1', index=True, header=False)  
-        route_timings_df.to_excel(writer, sheet_name='Sheet1', startcol=df_transpose.shape[1] + 2, index=False)  
+        df_transpose.to_excel(writer, sheet_name='Sheet1', index=True, header=False)
+        route_timings_df.to_excel(writer, sheet_name='Sheet1', startcol=df_transpose.shape[1] + 2, index=False)
         worksheet = writer.sheets['Sheet1']
         for i, col in enumerate(df.columns):
             max_length = max(df[col].astype(str).map(len).max(), len(col))
@@ -172,184 +179,122 @@ class book_ticket:
 
         self.mail()
 
+    def find_available_seats(self, train_number, travel_class, quota, current_station):
+        csv_path = f'/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/CSV-Files/{train_number}.csv'
+        
+        try:
+            seats_df = pd.read_csv(csv_path)
+        except FileNotFoundError:
+            print(f"Error: File {csv_path} not found.")
+            return pd.DataFrame()
+
+        # Ensure we are looking for available seats
+        available_seats = seats_df[
+            (seats_df['Current_Station'] == current_station) &
+            (seats_df['Class'] == travel_class) &
+            (seats_df['Quota'] == quota) &
+            (seats_df['Booking_Status'] == True)  # Booking_Status True indicates the seat is available
+        ]
+
+        return available_seats
+
     def available_seat_calculator(self):
         self.available = 0  # Reset available seats counter
-        path = "/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/CSV-Files/" + self.trnum + ".csv"
-        with open(path, 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if self.cls == row['Class'] and self.quo == row['Quota'] and row['Booking_Status'] == "True" and row['Current_Station'] in self.route:
-                    self.available = self.available + 1
+        csv_path = f'/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/CSV-Files/{self.trnum}.csv'
+        try:
+            seats_df = pd.read_csv(csv_path)
+            # Count available seats directly
+            self.available = len(seats_df[
+                (seats_df['Class'] == self.cls) &
+                (seats_df['Quota'] == self.quo) &
+                (seats_df['Booking_Status'] == True)
+            ])
+        except FileNotFoundError:
+            print(f"Error: File {csv_path} not found.")
 
-    def waiting_list_calculator(self, wquo):
-        self.waiting = 0  # Reset waiting list counter
-        path = "/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/CSV-Files/" + self.trnum + ".csv"
-        with open(path, 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if self.cls == row['Class'] and self.quo == row['Quota'] and row['Booking_Status'] == "False" and row['Current_Station'] in self.route:
-                    self.waiting += 1
-        return self.waiting
+    def display_available_seats(self):
+        print("---------------------------------------------")
+        print("\tChecking for Availability of Seats!")
+        print("---------------------------------------------")
+        available_seats = self.find_available_seats(self.trnum, self.cls, self.quo, self.src)
+        
+        if available_seats.empty:
+            print("Available seats in your class are -> 0")
+        else:
+            print(f"Available Seats in {self.trname} in {self.cls} class from {self.src} are ->")
+            print(available_seats[['Seat_No.', 'Birth_Type']])
+        
+    def booking(self):
+        print("---------------------------------------------")
+        self.src = input("Source Station: ")
+        self.des = input("Destination Station: ")
+        self.dod = input("Date of Departure: ")
+        self.cls = input("Class (e.g., 1A, 2A, 3A, SL): ")
+        self.quo = input("Quota (e.g., GN, LD, HP, DF, YU, TQ): ")
 
-    def check_train(self):
-        train_data = []
-        with open("/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/CSV-Files/Trains.csv", "r") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                train_data.append(row)
+        # Display available trains based on source and destination
+        df = pd.read_csv("/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/CSV-Files/Trains.csv")
+        available_trains = df[(df['Stations'].str.contains(self.src)) & (df['Stations'].str.contains(self.des))]
 
-        src_lower = self.src.lower()
-        des_lower = self.des.lower()
-
-        found_train = False
-        print("Available Train ->")
-        for row in train_data:
-            station_list = row['Stations'].split(', ')
-            if src_lower in [station.lower() for station in station_list] and des_lower in [station.lower() for station in station_list]:
-                    print(row['Train_Name'])
-                    self.trname = row['Train_Name']
-                    self.route_calculate()
-                    self.trnum = row['Train_No.']
-                    found_train = True
-
-        if not found_train:
-            print("Train Not Found !")
+        if available_trains.empty:
+            print("No trains available for the selected route.")
             return
 
-        self.trname = input("Choose Train : ")
-        for row in train_data:
-            if row['Train_Name'].lower() == self.trname.lower():
-                self.trnum = row['Train_No.']
-                return True
+        print("\nAvailable Trains:")
+        print(tabulate(available_trains[['Train_Name', 'Train_No.']], headers='keys', tablefmt='psql'))
 
-    def check_seat(self):
-        path = "/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/CSV-Files/" + self.trnum + ".csv"
-        available_seats = False
-        self.available_seat_calculator()  # Calculate available seats once
+        # Get train details from user
+        self.trname = input("Enter Train Name from the above list: ")
+        self.trnum = input("Enter Train Number from the above list: ")
 
-        with open(path, 'r') as file:
-            reader = csv.DictReader(file)
-            print("---------------------------------------------")
-            print("Checking for " + self.quo + " Seats...")
-            print("Available Seats:")
-            print(self.available)
-            for row in reader:
-                if self.cls == row['Class'] and row['Quota'] == self.quo and row['Current_Station'] in self.route:
-                    if row['Booking_Status'] == "True": 
-                        self.seat_number = random.choice(row['Seat_No.'])
-                        self.birth_type = row['Birth_Type']
-                        available_seats = True 
-                    elif row['Booking_Status'] == "False" and not available_seats and row['Current_Station'] in self.route:
-                        available_seats = False
-
-        if not available_seats:
-            print("---------------------------------------------")
-            print("Checking for " + self.quo + " Seats...")
-            waiting_list = self.waiting_list_calculator(self.quo)
-            print("Waiting List:\t", waiting_list)
-
-            askk = input("Do you wanna continue with your bookings ? (y/n):\t")
-            if (askk == 'y' or askk == 'Y'):
+        self.route_calculate()
+        self.display_available_seats()
+        self.available_seat_calculator()
+        print("Available seats in your class are ->", self.available)
+        if self.available > 0:
+            seat_no = input("Enter the Seat Number you want to book: ")
+            # Update the booking status of the selected seat
+            csv_path = f'/Users/gauravsrivastava1212/python-programming/End-Sem-Pro/CSV-Files/{self.trnum}.csv'
+            seats_df = pd.read_csv(csv_path)
+            if int(seat_no) in seats_df['Seat_No.'].values:
+                seats_df.loc[(seats_df['Class'] == self.cls) &
+                             (seats_df['Quota'] == self.quo) &
+                             (seats_df['Seat_No.'] == int(seat_no)), 'Booking_Status'] = False  # Set to False to indicate the seat is now booked
+                seats_df.to_csv(csv_path, index=False)
+                print(f"Seat {seat_no} has been successfully booked!")
+                self.seat_number = seat_no
                 self.register()
             else:
-                print("---------------------------------------------")
-                print("\tThank You For Visiting RailWise !")
-                print("---------------------------------------------")
-        print("---------------------------------------------")
+                print("Invalid seat number or seat is not available.")
+        else:
+            print("Sorry, No Tickets Available!")
 
-        if available_seats:
-
-            askk = input("Do you wanna continue with your bookings ? (y/n):\t")
-            if (askk == 'y' or askk == 'Y'):
-
-                with open(path, 'r+') as file:
-                    data = list(csv.DictReader(file))
-                    for row in data:
-                        if self.cls == row['Class'] and row['Quota'] == self.quo and self.seat_number == row['Seat_No.']:
-                            row['Booking_Status'] = 'False'
-                    file.seek(0)
-                    writer = csv.DictWriter(file, fieldnames=data[0].keys())
-                    writer.writeheader()
-                    writer.writerows(data)
-                self.register()
-            else:
-
-                print("---------------------------------------------")
-                print("\tThank You for Visiting RailWise !")
-                print("---------------------------------------------")
-                exit(0)
-
-
-if __name__ == "__main__":
-    quota_list = ['GN', 'LD', 'HP', 'DF', 'YU','TQ']
-    class_list = ['1A', '2A', '3A', 'SL']
+def main():
     while True:
-        print("\t\t Welcome to RailWise\n\tThe Smart Railway Management System...")
         print("---------------------------------------------")
-        print("1 ->\t Book Ticket")
-        print("2 ->\t Your Ticket Status")
-        print("3 ->\t Show Available Trains")
-        print("4 ->\t Exit")
+        print("                Rail Wise!")
         print("---------------------------------------------")
-
-        choice = input("Enter Choice User : ")
+        print("1. Book Tickets!")
+        print("2. Check PNR Status!")
+        print("3. Show All Available Trains!")
+        print("4. Exit!")
+        print("---------------------------------------------")
+        choice = input("Enter your choice: ")
 
         if choice == '1':
+            ticket = BookTicket()
+            ticket.booking()
+        elif choice == '2':
+            status = TicketStatus()
+            status.check_status()
+        elif choice == '3':
+            trains = ShowAvailableTrains()
+            trains.available_trains()
+        elif choice == '4':
+            print("Thank you for using Rail Wise! Have a great day!")
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1 and 4.")
 
-            bookT = book_ticket()
-            bookT.src = input("Enter Source :\t")
-            bookT.des = input("Enter Destination :\t")
-            bookT.dod = input("Enter Date of Departure (YYYY-MM-DD): ")
-            if (bookT.check_train() == True):
-                print("Enter the Details as Code...")
-                print("---------------------------------------------")
-                print("Quota Codes:")
-                if datetime.strptime(bookT.dod, '%Y-%m-%d').date() == (datetime.now().date() + timedelta(days=1)):
-                    print(tabulate([['General', 'GN'], ['Tatkal', 'TQ'], ['Ladies', 'LD'], ['Physically Handicapped', 'HP'], ['Defence', 'DF'], ['Yuva', 'YU']], headers=['Quota', 'Code']))
-                else:
-                    print(tabulate([['General', 'GN'], ['Ladies', 'LD'], ['Physically Handicapped', 'HP'], ['Defence', 'DF'], ['Yuva', 'YU']], headers=['Quota', 'Code']))
-                print("---------------------------------------------")
-                while True:
-                    bookT.quo = input("Quota : ")
-                    if datetime.strptime(bookT.dod, '%Y-%m-%d').date() != (datetime.now().date() + timedelta(days=1)) and bookT.quo == 'TQ':
-                        print("Tatkal quota is only available for booking for tomorrow's date.")
-                        print("Choose from the available list ...")
-                        continue
-                    if bookT.quo not in quota_list:
-                        print("Entered Quota does not exist !")
-                        print("Choose from the available list ...")
-                        continue
-                    else:
-                        break
-                print("---------------------------------------------")
-                print("Class Codes:")
-                print(tabulate([['1st AC', '1A'], ['2nd AC', '2A'], ['3rd AC', '3A'], ['Sleeper', 'SL']], headers=['Class', 'Code']))
-                print("---------------------------------------------")
-                while True:
-                    bookT.cls = input("Class : ")
-                    if bookT.cls not in class_list:
-                        print("Entered Class does not exist !")
-                        print("Choose from the available list ...")
-                        continue
-                    else:
-                        break
-                print("---------------------------------------------")
-                bookT.check_seat()  
-
-
-        if choice == '2':
-
-            ticket_status().check_status()
-
-        if choice == '3':
-
-            print("---------------------------------------------")
-            show_available_trains().available_trains()
-            print("---------------------------------------------")
-
-        if choice == '4':
-
-            print("---------------------------------------------")
-            print("\tThank You for Visiting RailWise !")
-            print("---------------------------------------------")
-            exit(0)
+if __name__ == "__main__":
+    main()
